@@ -1,10 +1,14 @@
-function string.interpolate(s, ...)
-    local arr = {...}
-    local ret = string.gsub(
-        s,
-        '{%d}',
+function string.interpolate(fmt, keys)
+    keys = type(keys) == "table" and keys or {}
+    local ret =
+        string.gsub(
+        fmt,
+        '{%w+}',
         function(c)
-            return arr[tonumber(string.match(c, '%d'))]
+            local key = string.match(c, "(%w+)")
+            // 添加数字索引支持
+            key = tonumber(key) or key
+            return keys[key] or ''
         end
     )
     return ret
