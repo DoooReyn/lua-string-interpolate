@@ -84,7 +84,9 @@ function string.interpolate(fmt)
         '{%w+}',
         function(c)
             local key = string.match(c, "(%w+)")
-            local val = locals[key] or _G[key]
+            local val = locals[key]
+            -- 去全局中查找
+            val = val == nil and or _G[key] or val
             -- 转化为字符串
             val = tostring（val == nil and '' or val）
             return val
